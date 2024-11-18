@@ -110,13 +110,30 @@ class quiz_api_test extends advanced_testcase {
         }
 
         // Create quiz attempts for students.
-        $flatanswers = array_merge(...array_map(fn($q) => array_keys($q['answers']), $questions));
+        $flatanswers = array_merge(...array_map(function($q) {
+            return isset($q['answers']) ? array_keys($q['answers']) : [];
+        }, $questions));
         foreach ($students as $student) {
             $this->create_quiz_attempt($quiz->id, $student->id, $flatanswers[array_rand($flatanswers)]);
         }
 
-        // Test API communication.
-        $this->send_answers_to_api($flatanswers);
+        $referenceanswers = [];
+        foreach ($questions as $questiondata) {
+            if (isset($questiondata['answers']) && is_array($questiondata['answers'])) {
+                foreach ($questiondata['answers'] as $answertext => $fraction) {
+                    if ($fraction == 1) {
+                        $referenceanswers[] = $answertext;
+                    }
+                }
+            }
+        }
+
+        $requestdata = [
+            'studentAnswers'  => $flatanswers,
+            'referenceAnswer' => array_fill(0, count($flatanswers), $referenceanswers[0] ?? ''),
+        ];
+
+        $this->send_answers_to_api($requestdata);
     }
 
     /**
@@ -209,17 +226,16 @@ class quiz_api_test extends advanced_testcase {
     /**
      * Sends answers to the API and verifies the response.
      */
-    private function send_answers_to_api($answers) {
+    private function send_answers_to_api($requestdata) {
         try {
             $apiendpoint = get_config('local_asystgrade', 'apiendpoint') ?: 'http://127.0.0.1:5001/api/autograde';
             $httpclient  = new http_client();
             $apiclient   = client::getInstance($apiendpoint, $httpclient);
 
-            $response = $apiclient->send_data(['studentAnswers' => $answers]);
+            $response = $apiclient->send_data($requestdata);
             $grades   = json_decode($response, true);
 
-            $this->assertNotEmpty($grades);
-            debugging('API response: ' . json_encode($grades));
+            $this->assertNotEmpty($grades, 'API returned empty grades.');
         } catch (Exception $e) {
             debugging('Error: ' . $e->getMessage());
         }

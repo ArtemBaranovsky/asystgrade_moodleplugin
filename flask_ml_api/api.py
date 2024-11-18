@@ -28,6 +28,10 @@ from flask import Flask, jsonify, request
 import os
 import sys
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 # Adding a path of module to system path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'asyst/Source/Skript/german')))
 
@@ -39,13 +43,17 @@ app = Flask(__name__)
 def get_data():
     try:
         data = request.get_json()
+        app.logger.debug(f"Received data: {data}")
         if not data:
             return jsonify({"error": "No data provided"}), 400
 
         results = process_data(data)
+        app.logger.debug(f"Processed results: {results}")
+
         return jsonify(results)
     except Exception as e:
+        app.logger.error(f"Error during processing: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
