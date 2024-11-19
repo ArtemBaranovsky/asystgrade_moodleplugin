@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Перейти в директорию плагина (замените путь, если необходимо)
+# Go to plugin directory (replace path if necessary)
 BACKEND_PATH=${PWD}"/local/asystgrade/flask_ml_api"
 
-# Проверка, существует ли директория
+# Check if directory exists
 if [ -d "$BACKEND_PATH" ]; then
-    echo "Перехожу в $PLUGIN_PATH"
+    echo "Going to $PLUGIN_PATH"
     cd "$BACKEND_PATH" || exit 1
 
-    # Запустить контейнеры
-    echo "Запускаю контейнер с Python бэкендом..."
+# Start containers
+    echo "Starting container with Python backend..."
     docker-compose up -d
-    echo "Контейнер с Python успешно запущен."
+    echo "Container with Python successfully started."
 else
-    echo "Ошибка: Директория $BACKEND_PATH не найдена."
+    echo "Error: Directory $BACKEND_PATH not found."
     exit 1
 fi

@@ -1,14 +1,17 @@
 #!/bin/bash
 
-# Путь к папке с Flask-бекендом относительно корня Moodle
+# Path to the folder with Flask backend relative to the Moodle root
 BACKEND_PATH=${PWD}"/local/asystgrade/flask_ml_api"
 echo $BACKEND_PATH
 
-# Переход в нужную папку
-cd "$BACKEND_PATH" || { echo "Папка с Flask API не найдена."; exit 1; }
+# Go to the desired folder
+cd "$BACKEND_PATH" || {
+  echo "Folder with Flask API not found.";
+  exit 1;
+}
 
-# Запуск Docker Compose для развертывания и запуска контейнера
+# Run Docker Compose to deploy and run the container
 docker-compose up -d --build
 
-# Сообщение об успешном развертывании
+# Message about successful deployment
 echo "Flask-бекенд развернут и запущен."
