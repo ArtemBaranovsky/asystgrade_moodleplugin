@@ -31,6 +31,7 @@ require_once('lib.php');
 
 use local_asystgrade\api\client;
 use local_asystgrade\api\http_client;
+use local_asystgrade\utils;
 
 try {
     require_login();
@@ -48,13 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($data) {
         // Preparing Flask API.
         try {
-            $apiendpoint = get_config('local_asystgrade', 'apiendpoint');
-            if (!$apiendpoint) {
-                throw new dml_exception('missingconfig', 'local_asystgrade');
-            }
+            $apiendpoint = utils::get_api_endpoint();
         } catch (dml_exception $e) {
-            debugging('Config error: ' . $e->getMessage());
-            $apiendpoint = 'http://127.0.0.1:5001/api/autograde'; // Default value.
+            debugging('Failed to get API endpoint setting: ' . $e->getMessage());
         }
 
         $httpclient = new http_client();

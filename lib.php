@@ -29,6 +29,7 @@
 
 use core\exception\moodle_exception;
 use core\output\notification;
+use local_asystgrade\utils;
 
 /**
  * A hook function that will process the data and insert the rating value.
@@ -46,10 +47,14 @@ function local_asystgrade_before_footer(): void {
     $slot = optional_param('slot', false, PARAM_INT);
 
     if ($PAGE->url->compare(new moodle_url('/mod/quiz/report.php'), URL_MATCH_BASE) && $slot) {
+        $apiendpoint = utils::get_api_endpoint();
+        $urlcomponents = parse_url($apiendpoint);
+        $host = $urlcomponents['host'];
+        $port = $urlcomponents['port'];
 
         if (is_flask_backend_running()) {
             $jsdata = [
-                'apiendpoint' => 'http://127.0.0.1:5001/api/autograde',
+                'apiendpoint' => $apiendpoint,
                 'qid' => $qid,
                 'slot' => $slot
             ];
@@ -68,12 +73,14 @@ function local_asystgrade_before_footer(): void {
 /**
  * Checks if the Flask backend is running.
  *
- * @param string $host The hostname or IP address.
- * @param int $port The port number.
  * @param int $timeout The timeout in seconds.
  * @return bool True if the Flask backend is running, false otherwise.
  */
-function is_flask_backend_running(string $host = '127.0.0.1', int $port = 5001, int $timeout = 3): bool {
+function is_flask_backend_running(int $timeout = 3): bool {
+    $apiendpoint = utils::get_api_endpoint();
+    $urlcomponents = parse_url($apiendpoint);
+    $host = $urlcomponents['host'] ?? '127.0.0.1';
+    $port = $urlcomponents['port'] ?? 5001;
     $connection = @fsockopen($host, $port, $errno, $errstr, $timeout);
 
     if (is_resource($connection)) {
@@ -84,4 +91,14 @@ function is_flask_backend_running(string $host = '127.0.0.1', int $port = 5001, 
         \core\notification::add("Flask backend connection failed: $errstr ($errno)", notification::NOTIFY_ERROR);
         return false;
     }
+}
+
+/**
+ * Obtains URL Flask API from plugin settings.
+ *
+ * @return string URL API.
+ * @throws dml_exception
+ */
+function local_asystgrade_get_api_endpoint(): string {
+    return get_config('local_asystgrade', 'apiendpoint') ?? 'http://127.0.0.1:5001/api/autograde';
 }

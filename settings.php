@@ -23,12 +23,9 @@
  * @copyright Yunus Eryilmaz & Larissa Kirschner <https://link.springer.com/article/10.1007/s40593-023-00383-w>
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+use local_asystgrade\utils;
 
-defined('MOODLE_INTERNAL') || die(); // Security check, only internally call through Moodle allowed.
-/**
- * Default API endpoint for the AsystGrade ML Backend.
- */
-const DEFAULT_API_ENDPOINT = 'http://127.0.0.1:5001/api/autograde';
+defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     global $ADMIN;
@@ -47,11 +44,13 @@ if ($hassiteconfig) {
             'local_asystgrade/apiendpoint',
             get_string('apiendpoint', 'local_asystgrade'),
             get_string('apiendpoint_desc', 'local_asystgrade'),
-            DEFAULT_API_ENDPOINT,
+            utils::get_api_endpoint(),
             PARAM_URL
         ));
     } catch (coding_exception $e) {
         // Exception intentionally ignored because the setting might already exist or might not be critical.
         debugging('Failed to add API endpoint setting: ' . $e->getMessage());
+    } catch (dml_exception $e) {
+        debugging('Failed to get API endpoint setting: ' . $e->getMessage());
     }
 }
