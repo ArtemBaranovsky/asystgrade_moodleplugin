@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MessDetectorOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCSFixerOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PHPCodeSnifferOptionsConfiguration">
+    <option name="highlightLevel" value="WARNING" />
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <PhpCSConfiguration beautifier_path="/opt/moodle/vendor/bin/phpcbf" tool_path="/opt/moodle/vendor/bin/phpcs" />
+    </phpcs_settings>
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="/opt/moodle" />
+      <path value="/opt/moodle/vendor/sebastian/environment" />
+      <path value="/opt/moodle/vendor/sebastian/exporter" />
+      <path value="/opt/moodle/vendor/sebastian/resource-operations" />
+      <path value="/opt/moodle/vendor/sebastian/code-unit" />
+      <path value="/opt/moodle/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="/opt/moodle/vendor/oleg-andreyev/mink-phpwebdriver" />
+      <path value="/opt/moodle/vendor/masterminds/html5" />
+      <path value="/opt/moodle/vendor/friends-of-behat/mink-extension" />
+      <path value="/opt/moodle/vendor/php-webdriver/webdriver" />
+      <path value="/opt/moodle/vendor/composer" />
+      <path value="/opt/moodle/vendor/psr/container" />
+      <path value="/opt/moodle/vendor/psr/log" />
+      <path value="/opt/moodle/vendor/psr/event-dispatcher" />
+      <path value="/opt/moodle/vendor/behat/mink-browserkit-driver" />
+      <path value="/opt/moodle/vendor/filp/whoops" />
+      <path value="/opt/moodle/vendor/behat/mink" />
+      <path value="/opt/moodle/vendor/behat/transliterator" />
+      <path value="/opt/moodle/vendor/behat/behat" />
+      <path value="/opt/moodle/vendor/behat/gherkin" />
+      <path value="/opt/moodle/vendor/myclabs/deep-copy" />
+      <path value="/opt/moodle/vendor/nikic/php-parser" />
+      <path value="/opt/moodle/vendor/phar-io/version" />
+      <path value="/opt/moodle/vendor/phar-io/manifest" />
+      <path value="/opt/moodle/vendor/phpunit/php-timer" />
+      <path value="/opt/moodle/vendor/phpunit/php-file-iterator" />
+      <path value="/opt/moodle/vendor/phpunit/php-invoker" />
+      <path value="/opt/moodle/vendor/phpunit/php-text-template" />
+      <path value="/opt/moodle/vendor/phpunit/phpunit" />
+      <path value="/opt/moodle/vendor/phpunit/php-code-coverage" />
+      <path value="/opt/moodle/vendor/symfony/dependency-injection" />
+      <path value="/opt/moodle/vendor/symfony/deprecation-contracts" />
+      <path value="/opt/moodle/vendor/symfony/service-contracts" />
+      <path value="/opt/moodle/vendor/symfony/string" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-intl-idn" />
+      <path value="/opt/moodle/vendor/symfony/mime" />
+      <path value="/opt/moodle/vendor/symfony/http-client-contracts" />
+      <path value="/opt/moodle/vendor/symfony/browser-kit" />
+      <path value="/opt/moodle/vendor/symfony/event-dispatcher" />
+      <path value="/opt/moodle/vendor/symfony/dom-crawler" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-ctype" />
+      <path value="/opt/moodle/vendor/symfony/css-selector" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="/opt/moodle/vendor/symfony/event-dispatcher-contracts" />
+      <path value="/opt/moodle/vendor/symfony/console" />
+      <path value="/opt/moodle/vendor/symfony/yaml" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="/opt/moodle/vendor/symfony/process" />
+      <path value="/opt/moodle/vendor/symfony/filesystem" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-php72" />
+      <path value="/opt/moodle/vendor/symfony/translation" />
+      <path value="/opt/moodle/vendor/symfony/http-client" />
+      <path value="/opt/moodle/vendor/symfony/translation-contracts" />
+      <path value="/opt/moodle/vendor/symfony/polyfill-mbstring" />
+      <path value="/opt/moodle/vendor/symfony/var-exporter" />
+      <path value="/opt/moodle/vendor/symfony/config" />
+      <path value="/opt/moodle/vendor/doctrine/instantiator" />
+      <path value="/opt/moodle/vendor/theseer/tokenizer" />
+      <path value="/opt/moodle/vendor/sebastian/global-state" />
+      <path value="/opt/moodle/vendor/mikey179/vfsstream" />
+      <path value="/opt/moodle/vendor/sebastian/recursion-context" />
+      <path value="/opt/moodle/vendor/sebastian/complexity" />
+      <path value="/opt/moodle/vendor/sebastian/object-reflector" />
+      <path value="/opt/moodle/vendor/sebastian/object-enumerator" />
+      <path value="/opt/moodle/vendor/sebastian/diff" />
+      <path value="/opt/moodle/vendor/sebastian/cli-parser" />
+      <path value="/opt/moodle/vendor/sebastian/type" />
+      <path value="/opt/moodle/vendor/sebastian/lines-of-code" />
+      <path value="/opt/moodle/vendor/sebastian/comparator" />
+      <path value="/opt/moodle/vendor/sebastian/version" />
+      <path value="/opt/moodle/vendor/squizlabs/php_codesniffer" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="/opt/moodle/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+  <component name="PsalmOptionsConfiguration">
+    <option name="transferred" value="true" />
+  </component>
+</project>
