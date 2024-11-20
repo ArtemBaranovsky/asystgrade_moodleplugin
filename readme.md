@@ -167,10 +167,10 @@ docker-compose up flask -d
 ~~~
 Asyst ML Backend could be hosted and used not only at local server, but at some remoted services.
 In this case it is possible to change an API address from http://127.0.0.1:5001/api/autograde to another.
-![API server  failure.png](https://transfer.hft-stuttgart.de/gitlab/ulrike.pado/asyst-moodle-plugin/-/blob/asyst-moodle-plugin/images/API%20server%20%20failure.png)
+![API server failure](https://transfer.hft-stuttgart.de/gitlab/ulrike.pado/asyst-moodle-plugin/-/raw/asyst-moodle-plugin/images/API%20server%20%20failure.png)
 
 If ASYST ML microservice is running, the grade will appear at every student's answer.
-![Grading%20result.png](https://transfer.hft-stuttgart.de/gitlab/ulrike.pado/asyst-moodle-plugin/-/blob/asyst-moodle-plugin/images/Grading%20result.png)
+![Grading result](https://transfer.hft-stuttgart.de/gitlab/ulrike.pado/asyst-moodle-plugin/-/raw/asyst-moodle-plugin/images/Grading%20result.png)
 
 
 The structure of request to ASYST ML Backend: 
