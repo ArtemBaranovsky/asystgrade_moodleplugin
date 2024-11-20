@@ -70,14 +70,6 @@ class local_asystgrade_lib {
 +string generate_script(array grades, array inputNames, float maxmark)
 }
 
-class quizquery {
-+get_question_attempts($qid, $slot)
-+get_reference_answer($qid)
-+get_attempt_steps($question_attempt_id)
-+get_student_answer($attemptstepid)
-+bool gradesExist(int quizid, int userid)
-}
-
 class client {
 +send_data(array $data): bool|string
 +getInstance(string $endpoint, http_client_interface $httpClient): client
@@ -98,18 +90,11 @@ class provider {
 +string get_reason()
 }
 
-class DB {
-    
-}
-
-local_asystgrade_lib <--> quizquery : interacts with
 local_asystgrade_lib --> client : sends data to
 local_asystgrade_lib <-- client : get response from
 client --> http_client_interface : implements
 client --> http_client : uses
 http_client_interface <|-- http_client : implements
-quizquery --> quizquery_interface : implements
-quizquery --> DB : uses
 provider --> core_privacy_local_metadata_null_provider : implements
 
 quiz_api_test --> client : sends data to
