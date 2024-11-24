@@ -33,8 +33,8 @@ return [
         'qtype'        => 'essay',
         'answers'      => [
             'Die Ausführung wird schneller, weil der Prozessor zwischen verschiedenen Teilaufgaben hin- und herspringen kann und
-             so z.B. Wartezeiten auf Daten in einem Thread zur Bearbeitung anderer Threads genutzt werden können.' => 1
-        ]
+             so z.B. Wartezeiten auf Daten in einem Thread zur Bearbeitung anderer Threads genutzt werden können.' => 1,
+        ],
     ],
     [
         'questiontext' => 'Warum wird Ihr Programm durch die Verwendung von Threads schneller, auch wenn Sie nur einen
@@ -42,8 +42,8 @@ return [
         'qtype'        => 'essay',
         'answers'      => [
             'Die Ausführung wird schneller, weil der Prozessor zwischen verschiedenen Teilaufgaben hin- und herspringen kann und
-             so z.B. Wartezeiten auf Daten in einem Thread zur Bearbeitung anderer Threads genutzt werden können.' => 1
-        ]
+             so z.B. Wartezeiten auf Daten in einem Thread zur Bearbeitung anderer Threads genutzt werden können.' => 1,
+        ],
     ],
     [
         'questiontext' => 'Beschreiben Sie die Struktur einer Stream-Pipeline. Woher kommen die Daten, was geschieht im Stream
@@ -53,8 +53,8 @@ return [
         'answers'      => [
             'Datenquelle: Collections, Arrays, Generatoren (z.B. Datenbankabfragen, eigene Methoden). Verarbeitung: Filtern,
              Umformung, Begrenzung. Datensenke: Minimum / Maximum / Durchschnitt / Anzahl, Ausgabe in Collection oder Array /
-             Reduktion / Auswertung.' => 1
-        ]
+             Reduktion / Auswertung.' => 1,
+        ],
     ],
     [
         'questiontext' => 'Welche Auswirkungen hat die Model-View-Aufteilung bei Swing-Komponenten? Nennen Sie Beispiele anhand
@@ -64,16 +64,16 @@ return [
             'Datenhaltung und Darstellung werden getrennt, so dass dieselben Daten flexibel dargestellt werden können. Datenhaltung
              findet in der Klasse TableModel statt: Welche Information steht in welcher Zelle? Information z.B. über die
              Editierbarkeit der Zellen, den zu verwendenden Editor und die Spaltenreihenfolge werden in JTable bzw.
-             TableColumnModel gehalten.' => 3
-        ]
+             TableColumnModel gehalten.' => 3,
+        ],
     ],
     [
         'questiontext' => 'Warum braucht man bei der Arbeit mit Threads Synchronisation?',
         'qtype'        => 'essay',
         'answers'      => [
             'Man muss vermeiden, dass verschiedene Threads gleichzeitig auf Daten oder Objekte zugreifen, weil es dadurch zur
-             Zerstörung von Werten und zu inkonsistenten Zuständen kommen kann.' => 1
-        ]
+             Zerstörung von Werten und zu inkonsistenten Zuständen kommen kann.' => 1,
+        ],
     ],
     [
         'questiontext' => 'Beantworten Sie kurz die 3 Fragen 1 - Was wird unter einem Thread verstanden / wann werden Threads
@@ -82,7 +82,7 @@ return [
         'qtype'        => 'essay',
         'answers'      => [
             'Thread: 1 PT Ablauffaden, Ablaufeinheit, Ausführung etc. 1Pt Parallel, Quasi Parallel, Core, 1Pt Geschwindigkeit,
-             Resourcenauslastung, parallele Ausführung' => 7
-        ]
+             Resourcenauslastung, parallele Ausführung' => 7,
+        ],
     ],
 ];

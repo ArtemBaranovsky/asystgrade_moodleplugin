@@ -24,7 +24,7 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname']       = 'ASYST API Moodle integration plugin';
 $string['apiendpoint']      = 'API Endpoint';
 $string['apiendpoint_desc'] = 'The endpoint of the AsystGrade API should be changed if you set ML Backend at remote server.';
+$string['pluginname']       = 'ASYST API Moodle integration plugin';
 $string['privacy:metadata'] = 'The AsystGrade plugin does not store any personal data.';

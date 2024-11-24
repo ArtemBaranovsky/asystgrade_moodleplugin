@@ -56,7 +56,7 @@ function local_asystgrade_before_footer(): void {
             $jsdata = [
                 'apiendpoint' => $apiendpoint,
                 'qid' => $qid,
-                'slot' => $slot
+                'slot' => $slot,
             ];
 
             $PAGE->requires->js(new moodle_url('/local/asystgrade/js/grade.js', ['v' => time()]));

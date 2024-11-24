@@ -29,6 +29,8 @@ namespace local_asystgrade\api;
 
 use Exception;
 use local_asystgrade\api\http_client_interface;
+use local_asystgrade\api\http_client_interface;
+
 /**
  * Client class for handling HTTP requests to Flask ML backend.
  *
@@ -37,28 +39,25 @@ use local_asystgrade\api\http_client_interface;
  * @package   local_asystgrade
  */
 class client {
-    /** @var string This variable holds a domain or IP to attached flask ML backend */
-    private string                $endpoint;
-
-    /** @var http_client_interface This variable holds an interface for http_client */
-    private http_client_interface $httpclient;
-
     /** @var ?client This variable holds an object type for http_client */
     private static ?client        $instance = null;
 
     /**
      * Client class for handling HTTP requests to Flask ML backend.
+     * @param string $endpoint This variable holds a domain or IP to attached flask ML backend
+     * @param \local_asystgrade\api\http_client_interface $httpclient This variable holds an interface for http_client
      */
-    private function __construct(string $endpoint, http_client_interface $httpclient) {
-        $this->endpoint = $endpoint;
-        $this->httpclient = $httpclient;
+    private function __construct(
+        private string $endpoint,
+        private http_client_interface $httpclient
+    ) {
     }
 
     /**
      * Returns the singleton instance of the client.
      *
      * @param string $endpoint
-     * @param http_client_interface $httpClient
+     * @param http_client_interface $httpclient
      * @return client
      */
     public static function getinstance(string $endpoint, http_client_interface $httpclient): client {

@@ -25,8 +25,16 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_asystgrade;
+
+use advanced_testcase;
+use coding_exception;
+use context_course;
+use dml_exception;
+use Exception;
 use local_asystgrade\api\client;
 use local_asystgrade\api\http_client;
+use local_asystgrade\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -39,7 +47,7 @@ require_once($CFG->dirroot . '/mod/quiz/tests/generator/lib.php');
  * Class quiz_api_test
  * @package local_asystgrade
  */
-class quiz_api_test extends advanced_testcase {
+final class quiz_api_test extends advanced_testcase {
 
     /**
      * Sets up the test environment by resetting the database and truncating quiz-related tables.
@@ -138,6 +146,9 @@ class quiz_api_test extends advanced_testcase {
 
     /**
      * Creates a question category.
+     *
+     * @param int $contextid
+     * @return false|mixed|\stdClass
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -162,19 +173,31 @@ class quiz_api_test extends advanced_testcase {
 
     /**
      * Creates a question and adds it to a category.
+     *
+     * @param $questiongen
+     * @param $questiondata
+     * @param $category
+     * @param $modifiedby
+     * @param $context
+     * @return mixed
      */
     private function create_question($questiongen, $questiondata, $category, $modifiedby, $context) {
         return $questiongen->create_question($questiondata['qtype'], null, [
-            'category'     => $category->id,
-            'questiontext' => ['text' => $questiondata['questiontext'], 'format' => FORMAT_HTML],
-            'name'         => 'Test Question',
-            'contextid'    => $context->id,
-            'modifiedby'   => $modifiedby,
+           'category'     => $category->id,
+           'questiontext' => ['text' => $questiondata['questiontext'], 'format' => FORMAT_HTML],
+           'name'         => 'Test Question',
+           'contextid'    => $context->id,
+           'modifiedby'   => $modifiedby,
         ]);
     }
 
     /**
      * Adds a question to a quiz.
+     *
+     * @throws dml_exception
+     * @param $quiz
+     * @param $question
+     * @return void
      * @throws dml_exception
      */
     private function add_question_to_quiz($quiz, $question) {
@@ -197,6 +220,12 @@ class quiz_api_test extends advanced_testcase {
 
     /**
      * Creates a quiz attempt for a student.
+     * @throws dml_exception
+     *
+     * @param $quizid
+     * @param $userid
+     * @param $answer
+     * @return void
      * @throws dml_exception
      */
     private function create_quiz_attempt($quizid, $userid, $answer) {
@@ -225,10 +254,13 @@ class quiz_api_test extends advanced_testcase {
 
     /**
      * Sends answers to the API and verifies the response.
+     *
+     * @param $requestdata
+     * @return void
      */
     private function send_answers_to_api($requestdata) {
         try {
-            $apiendpoint = get_config('local_asystgrade', 'apiendpoint') ?: 'http://127.0.0.1:5001/api/autograde';
+            $apiendpoint = utils::get_api_endpoint();
             $httpclient  = new http_client();
             $apiclient   = client::getInstance($apiendpoint, $httpclient);
 

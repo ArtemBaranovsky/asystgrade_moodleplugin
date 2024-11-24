@@ -1,6 +1,14 @@
 M.local_asystgrade = {
-    init: function(Y, js_data) {
-        window.gradeData = js_data;
+    init: function(Y, jsData) {
+        const isDebuggingEnabled = true; // Set this to false in production
+
+        function log(message) {
+            if (isDebuggingEnabled) {
+                console.log(message);
+            }
+        }
+
+        window.gradeData = jsData;
         document.addEventListener('DOMContentLoaded', function() {
             const apiEndpoint = M.cfg.wwwroot + '/local/asystgrade/api.php';
             const maxmark = document.querySelectorAll("input[name$='-maxmark']")[0].value;
@@ -22,13 +30,19 @@ M.local_asystgrade = {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.grades) {
-                        console.log(data.grades);
+                        log(data.grades);
                         updateMarks(data.grades);
                     } else {
-                        console.error('Error in grade response:', data.error);
+                        error('Error in grade response:', data.error);
                     }
+                    // Return the data to keep the Promise chain intact
+                    return data;
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    error('Error:', error);
+                    // Return the error to keep the Promise chain intact
+                    throw error;
+                });
 
             function updateMarks(grades) {
                 const inputs = document.querySelectorAll("input[name$='_-mark']");
@@ -39,7 +53,7 @@ M.local_asystgrade = {
                     if (inputs[index]) {
                         inputs[index].value = predictedGrade;
                     } else {
-                        console.error(`No grade input found for index: ${index}`);
+                        error(`No grade input found for index: ${index}`);
                     }
                 });
             }
