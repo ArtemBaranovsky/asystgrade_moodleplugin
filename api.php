@@ -113,4 +113,6 @@ function retry_api_request(client $apiclient, array $payload, int $maxretries = 
             }
         }
     }
+
+    return false; // Return false if all retries fail.
 }
