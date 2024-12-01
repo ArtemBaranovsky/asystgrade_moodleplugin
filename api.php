@@ -35,6 +35,7 @@ use local_asystgrade\utils;
 
 try {
     require_login();
+    require_capability('mod/assign:grade', context_system::instance());
 } catch (coding_exception | moodle_exception $e) {
     debugging($e->getMessage());
     redirect(
@@ -43,53 +44,74 @@ try {
     );
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    throw new moodle_exception('invalidmethod', 'local_asystgrade');
+}
 
-    if ($data) {
-        // Preparing Flask API.
-        try {
-            $apiendpoint = utils::get_api_endpoint();
-        } catch (dml_exception $e) {
-            debugging('Failed to get API endpoint setting: ' . $e->getMessage());
-        }
+$data = json_decode(file_get_contents('php://input'), true);
 
-        $httpclient = new http_client();
-        $apiclient = client::getInstance($apiendpoint, $httpclient);
+if ($data) {
+    // Preparing Flask API.
+    try {
+        $apiendpoint = utils::get_api_endpoint();
+    } catch (dml_exception $e) {
+        debugging('Failed to get API endpoint setting: ' . $e->getMessage());
+    }
 
-        $maxretries = 3;
-        $attempts = 0;
-        $success = false;
+    $httpclient = new http_client();
+    $apiclient = client::getInstance($apiendpoint, $httpclient);
 
-        while ($attempts < $maxretries && !$success) {
-            try {
-                // Sending data to Flask and obtaining an answer.
-                $response = $apiclient->send_data($data);
-                $success = true;
-            } catch (Exception $e) {
-                $attempts++;
-                debugging('API request error: ' . $e->getMessage());
-                if ($attempts >= $maxretries) {
-                    echo json_encode(['error' => 'A server error occurred. Please try again later.']);
-                    exit; // Ensure to stop further processing.
-                }
-            }
-        }
+    $response = retry_api_request($apiclient, $data);
+    $grades = json_decode($response, true);
 
-        if ($success) {
-            $grades = json_decode($response, true);
-
-            // Check JSON validity.
-            if (json_last_error() === JSON_ERROR_NONE) {
-                echo json_encode(['success' => true, 'grades' => $grades]);
-            } else {
-                debugging('JSON decode error: ' . json_last_error_msg());
-                echo json_encode(['error' => 'Invalid JSON from Flask API']);
-            }
-        }
+    // Check JSON validity.
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        debugging('JSON decode error: ' . json_last_error_msg());
+        throw new moodle_exception('invalidjson', 'local_asystgrade', '', json_last_error_msg());
     } else {
-        echo json_encode(['error' => 'No data received']);
+        echo json_encode(['success' => true, 'grades' => $grades]);
     }
 } else {
-    echo json_encode(['error' => 'Invalid request method']);
+    echo json_encode(['error' => 'No data received']);
+}
+
+
+/**
+ * Validates the provided request payload data array.
+ *
+ * @param  array $data The data to validate.
+ * @return array The cleaned data.
+ * @throws moodle_exception If the data is invalid.
+ */
+function validate_data($data): array {
+    if (!isset($data['referenceAnswer'], $data['studentAnswers']) || !is_array($data['studentAnswers'])) {
+        throw new moodle_exception('invalidrequest', 'local_asystgrade');
+    }
+    return [
+        'referenceAnswer' => clean_param($data['referenceAnswer'], PARAM_TEXT),
+        'studentAnswers' => array_map(fn($answer) => clean_param($answer, PARAM_TEXT), $data['studentAnswers']),
+    ];
+}
+
+/**
+ * Retries an API request a specified number of times.
+ *
+ * @param  object $apiclient The API client to use for the request.
+ * @param  array $payload The data to send in the request.
+ * @param  int $maxretries The maximum number of retry attempts.
+ * @return mixed The response from the API client.
+ * @throws moodle_exception If the API request fails after the maximum retries.
+ */
+function retry_api_request($apiclient, $payload, $maxretries = 3): mixed
+{
+    for ($attempts = 0; $attempts < $maxretries; $attempts++) {
+        try {
+            return $apiclient->send_data(validate_data($payload));
+        } catch (Exception $e) {
+            debugging('API request error: ' . $e->getMessage());
+            if ($attempts + 1 === $maxretries) {
+                throw new moodle_exception('apifailure', 'local_asystgrade');
+            }
+        }
+    }
 }

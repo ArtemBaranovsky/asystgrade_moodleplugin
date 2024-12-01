@@ -43,6 +43,8 @@ class http_client implements http_client_interface {
      * @throws Exception
      */
     public function post(string $url, array $data): bool|string {
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
         $curl = new curl();
         $options = [
             'CURLOPT_HTTPHEADER' => ['Content-Type: application/json'],

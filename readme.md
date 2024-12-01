@@ -172,6 +172,15 @@ In this case it is possible to change an API address from http://127.0.0.1:5001/
 If ASYST ML microservice is running, the grade will appear at every student's answer.
 ![Grading result](https://transfer.hft-stuttgart.de/gitlab/ulrike.pado/asyst-moodle-plugin/-/raw/asyst-moodle-plugin/images/Grading%20result.png)
 
+### Other important settings
+Since Moodle's Curl wrapper is used, it is also necessary to set a few HTTP security properties at the page /admin/settings.php?section=httpsecurity: 
+- remove from cURL blocked hosts list 127.0.0.0/8 and localhost.
+- add to cURL allowed ports list 5001 (or other one that you use for an external custom flask server).
+
+If you are using default flask local server, you could also just run update_http_settings script for that:
+~~~php
+php ./local/asystgrade/update_http_settings.php
+~~~
 
 The structure of request to ASYST ML Backend: 
 ~~~JSON

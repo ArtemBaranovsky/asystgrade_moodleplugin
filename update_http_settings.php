@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Language strings
+ * CLI Script for the local_asystgrade plugin to set HTTP Curl port and domain permissions.
  *
  * @package   local_asystgrade
  * @copyright 2024 Artem Baranovskyi <artem.baranovsky1980@gmail.com>
@@ -24,17 +24,24 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['apiendpoint']      = 'API Endpoint';
-$string['apiendpoint_desc'] = 'The endpoint of the AsystGrade API should be changed if you set ML Backend at remote server.';
-$string['pluginname']       = 'ASYST API Moodle integration plugin';
-$string['privacy:metadata'] = 'The AsystGrade plugin does not store any personal data.';
+defined('MOODLE_INTERNAL') || die();
 
-// Error messages.
-$string['loginerror']       = 'You must log in with sufficient permissions to access this page.';
-$string['invalidmethod']    = 'Invalid request method. Only POST requests are allowed.';
-$string['invalidrequest']   = 'Invalid request payload. Required fields are missing or improperly formatted.';
-$string['invalidanswers']   = 'Invalid student answers provided.';
-$string['invalidjson']      = 'Failed to parse JSON response from the server: {$a}';
-$string['apifailure']       = 'The grading API failed after multiple attempts. Please try again later.';
-$string['norequestdata']    = 'No data received from the client.';
+/**
+ * Define CLI_SCRIPT to indicate this script is being run from the command line.
+ */
+const CLI_SCRIPT = true;
+require('config.php');
 
+global $CFG, $DB;
+
+// Remove 127.0.0.0/8 and localhost from blocked hosts.
+$blockedhosts = get_config('core', 'curlsecurityblockedhosts');
+$newblockedhosts = str_replace(['127.0.0.0/8', 'localhost'], '', $blockedhosts);
+set_config('curlsecurityblockedhosts', trim($newblockedhosts, ','));
+
+// Add 5001 to allowed ports.
+$allowedports = get_config('core', 'curlsecurityallowedport');
+$newallowedports = $allowedports ? $allowedports . "\r\n5001" : '5001';
+set_config('curlsecurityallowedport', $newallowedports);
+
+echo "Settings updated.\n";
