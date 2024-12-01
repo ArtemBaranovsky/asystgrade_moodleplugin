@@ -34,7 +34,6 @@ use dml_exception;
 use Exception;
 use local_asystgrade\api\client;
 use local_asystgrade\api\http_client;
-use local_asystgrade\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -46,6 +45,7 @@ require_once($CFG->dirroot . '/mod/quiz/tests/generator/lib.php');
 /**
  * Class quiz_api_test
  * @package local_asystgrade
+ * @covers \local_asystgrade
  */
 final class quiz_api_test extends advanced_testcase {
 
@@ -68,6 +68,7 @@ final class quiz_api_test extends advanced_testcase {
     /**
      * Tests the quiz API by creating quiz attempts and validating responses.
      * @throws Exception
+     * @covers \local_asystgrade
      */
     public function test_quiz_api(): void {
         global $DB;
@@ -152,7 +153,7 @@ final class quiz_api_test extends advanced_testcase {
      * @throws coding_exception
      * @throws dml_exception
      */
-    private function create_question_category(int $contextid) {
+    private function create_question_category(int $contextid): mixed {
         global $DB;
 
         $category = [
@@ -181,7 +182,7 @@ final class quiz_api_test extends advanced_testcase {
      * @param $context
      * @return mixed
      */
-    private function create_question($questiongen, $questiondata, $category, $modifiedby, $context) {
+    private function create_question($questiongen, $questiondata, $category, $modifiedby, $context): mixed {
         return $questiongen->create_question($questiondata['qtype'], null, [
            'category'     => $category->id,
            'questiontext' => ['text' => $questiondata['questiontext'], 'format' => FORMAT_HTML],
@@ -200,7 +201,7 @@ final class quiz_api_test extends advanced_testcase {
      * @return void
      * @throws dml_exception
      */
-    private function add_question_to_quiz($quiz, $question) {
+    private function add_question_to_quiz($quiz, $question): void {
         global $DB;
 
         $slotdata = [
@@ -228,7 +229,7 @@ final class quiz_api_test extends advanced_testcase {
      * @return void
      * @throws dml_exception
      */
-    private function create_quiz_attempt($quizid, $userid, $answer) {
+    private function create_quiz_attempt($quizid, $userid, $answer): void {
         global $DB;
 
         $uniqueid = $DB->get_field_sql('SELECT COALESCE(MAX(uniqueid), 0) + 1 FROM {quiz_attempts}');
@@ -258,7 +259,7 @@ final class quiz_api_test extends advanced_testcase {
      * @param $requestdata
      * @return void
      */
-    private function send_answers_to_api($requestdata) {
+    private function send_answers_to_api($requestdata): void {
         try {
             $apiendpoint = utils::get_api_endpoint();
             $httpclient  = new http_client();

@@ -2,12 +2,6 @@ M.local_asystgrade = {
     init: function(Y, jsData) {
         const isDebuggingEnabled = true; // Set this to false in production
 
-        function log(message) {
-            if (isDebuggingEnabled) {
-                console.log(message);
-            }
-        }
-
         window.gradeData = jsData;
         document.addEventListener('DOMContentLoaded', function() {
             const apiEndpoint = M.cfg.wwwroot + '/local/asystgrade/api.php';
@@ -30,16 +24,16 @@ M.local_asystgrade = {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.grades) {
-                        log(data.grades);
+                        console.log(data.grades);
                         updateMarks(data.grades);
                     } else {
-                        error('Error in grade response:', data.error);
+                        console.log('Error in grade response:', data.error);
                     }
                     // Return the data to keep the Promise chain intact
                     return data;
                 })
                 .catch(error => {
-                    error('Error:', error);
+                    console.log('Error:', error);
                     // Return the error to keep the Promise chain intact
                     throw error;
                 });
@@ -53,7 +47,7 @@ M.local_asystgrade = {
                     if (inputs[index]) {
                         inputs[index].value = predictedGrade;
                     } else {
-                        error(`No grade input found for index: ${index}`);
+                        console.log(`No grade input found for index: ${index}`);
                     }
                 });
             }
