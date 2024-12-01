@@ -27,44 +27,33 @@
 
 namespace local_asystgrade\api;
 
+use curl;
 use Exception;
 
 /**
  * HTTP client class for handling HTTP POST requests.
  */
 class http_client implements http_client_interface {
-
     /**
-     * Sends a POST request to the specified URL with the provided data.
+     * Sends a POST request using Moodle's curl wrapper.
      *
-     * @param string $url An endpoint URL. Could be an IP, a domain, or a container name, like flask.
+     * @param string $url An endpoint URL.
      * @param array $data The request payload.
-     *
      * @return bool|string
      * @throws Exception
      */
     public function post(string $url, array $data): bool|string {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        $response = curl_exec($ch);
+        $curl = new curl();
+        $options = [
+            'CURLOPT_HTTPHEADER' => ['Content-Type: application/json'],
+        ];
 
-        if (curl_errno($ch)) {
-            throw new Exception('Curl error: ' . curl_error($ch));
-        }
+        $response = $curl->post($url, json_encode($data), $options);
+        $info = $curl->get_info();
 
-        $statuscode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        if ($statuscode != 200) {
-            debugging("API Error: HTTP $statuscode - $response");
-            die('Error from API. Response code ' . $statuscode);
-        }
-
-        if ($response === false) {
-            throw new Exception('Error sending data to API');
+        if ($info['http_code'] !== 200) {
+            debugging("API Error: HTTP {$info['http_code']} - $response");
+            throw new Exception("HTTP request error: {$info['http_code']}");
         }
 
         return $response;
