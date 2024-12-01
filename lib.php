@@ -79,8 +79,8 @@ function local_asystgrade_before_footer(): void {
 function is_flask_backend_running(int $timeout = 3): bool {
     $apiendpoint = utils::get_api_endpoint();
     $urlcomponents = parse_url($apiendpoint);
-    $host = $urlcomponents['host'] ?? '127.0.0.1';
-    $port = $urlcomponents['port'] ?? 5001;
+    $host = $urlcomponents['host'];
+    $port = $urlcomponents['port'];
     $connection = @fsockopen($host, $port, $errno, $errstr, $timeout);
 
     if (is_resource($connection)) {
@@ -91,14 +91,4 @@ function is_flask_backend_running(int $timeout = 3): bool {
         \core\notification::add("Flask backend connection failed: $errstr ($errno)", notification::NOTIFY_ERROR);
         return false;
     }
-}
-
-/**
- * Obtains URL Flask API from plugin settings.
- *
- * @return string URL API.
- * @throws dml_exception
- */
-function local_asystgrade_get_api_endpoint(): string {
-    return get_config('local_asystgrade', 'apiendpoint') ?? 'http://127.0.0.1:5001/api/autograde';
 }
