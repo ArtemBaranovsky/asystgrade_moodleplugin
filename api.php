@@ -96,14 +96,13 @@ function validate_data($data): array {
 /**
  * Retries an API request a specified number of times.
  *
- * @param  object $apiclient The API client to use for the request.
- * @param  array $payload The data to send in the request.
- * @param  int $maxretries The maximum number of retry attempts.
- * @return mixed The response from the API client.
+ * @param client $apiclient The API client to use for the request.
+ * @param array $payload The data to send in the request.
+ * @param int $maxretries The maximum number of retry attempts.
+ * @return string|bool The response from the API client.
  * @throws moodle_exception If the API request fails after the maximum retries.
  */
-function retry_api_request($apiclient, $payload, $maxretries = 3): mixed
-{
+function retry_api_request(client $apiclient, array $payload, int $maxretries = 3): string|bool {
     for ($attempts = 0; $attempts < $maxretries; $attempts++) {
         try {
             return $apiclient->send_data(validate_data($payload));
