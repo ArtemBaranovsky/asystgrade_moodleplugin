@@ -27,10 +27,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_asystgrade'; // Full name of the plugin.
-$plugin->version   = 2024112501;         // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;         // Requires minimal Moodle version 3.11.
+$plugin->version   = 2025022401;         // The current module version (Date: YYYYMMDDXX).
+$plugin->requires  = 2023041400;         // Requires minimal Moodle version 4.2.
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.01';
+$plugin->release   = '1.02';
 
 $plugin->dependencies = [
     'mod_quiz' => ANY_VERSION, // This plugin depends on the quiz module.
